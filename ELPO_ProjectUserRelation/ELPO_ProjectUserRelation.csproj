@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ELPO_ProjectUserRelation.Bussiness\ELPO_ProjectUserRelation.Bussiness.csproj" />
+    <ProjectReference Include="..\ELPO_ProjectUserRelation.DataAccess\ELPO_ProjectUserRelation.DataAccess.csproj" />
+    <ProjectReference Include="..\ELPO_ProjectUserRelation.Entities\ELPO_ProjectUserRelation.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
