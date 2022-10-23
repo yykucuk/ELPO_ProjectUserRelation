@@ -2,9 +2,6 @@
 using ELPO_ProjectUserRelation.Entities.ELPOContextDir;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using Microsoft.AspNetCore.Http;
 using ELPO_ProjectUserRelation.Models;
 
 namespace ELPO_ProjectUserRelation.Controllers
