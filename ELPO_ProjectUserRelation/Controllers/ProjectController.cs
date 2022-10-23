@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using ELPO_ProjectUserRelation.Models;
 
 namespace ELPO_ProjectUserRelation.Controllers
 {
@@ -43,21 +44,26 @@ namespace ELPO_ProjectUserRelation.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult AddProject(string? msg)
         {
-            return View(msg);
+            ErrorMsgModel errorMsg = new ErrorMsgModel { Msg = msg };
+            return View(errorMsg);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult AddProject(string name, IFormFile icon, string description, int progress)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return RedirectToAction("AddProject", new { msg = "Proje adı giriniz!" });
+            }
             if(icon == null || icon.Length == 0)
             {
-                return RedirectToAction("AddProject","dosya yok");
+                return RedirectToAction("AddProject", new {msg = "dosya giriniz!" });
             }
             var extention = Path.GetExtension(icon.FileName).Trim('.').ToLower();
             if (!(new[] {"jpg", "png", "jpeg" }).Contains(extention))
             {
-                return RedirectToAction("AddProject",".jpg, .png yada jpeg giriniz!");
+                return RedirectToAction("AddProject", new { msg = ".jpg, .png yada jpeg olarak giriniz!" } );
             }
             string path = Path.Combine(_environment.ContentRootPath, "wwwroot\\Img");
             if (!Directory.Exists(Path.Combine(path)))
