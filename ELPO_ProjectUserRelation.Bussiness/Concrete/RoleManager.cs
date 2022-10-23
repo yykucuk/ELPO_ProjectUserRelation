@@ -1,6 +1,6 @@
 ﻿using ELPO_ProjectUserRelation.Bussiness.Abstract;
 using ELPO_ProjectUserRelation.DataAccess.Abstract;
-using ELPO_ProjectUserRelation.Entities;
+using ELPO_ProjectUserRelation.Entities.ELPOContextDir;
 
 namespace ELPO_ProjectUserRelation.Bussiness.Concrete
 {

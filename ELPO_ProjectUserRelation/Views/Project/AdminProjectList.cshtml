@@ -1,0 +1,45 @@
+﻿@using ELPO_ProjectUserRelation.Entities.ELPOContextDir
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<Project>
+
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Icon</th>
+      <th scope="col">Project Name</th>
+      <th scope="col">Category</th>
+      <th scope="col">Team</th>
+      <th scope="col">Progress</th>
+      <th scope="col">Options</th>
+    </tr>
+  </thead>
+  <tbody>
+      @foreach (Project project in Model)
+        {
+            <tr>
+              <td><img style="width:40px;height:40px;border-radius: 50%;" src="~/img/@project.IconUrl"/></td>
+              <td>@project.Name</td>
+              <td style="color:@project.Category.Color">@project.Category.Name</td>
+              <td>
+                    @foreach (ProjectUserRelation item in project.ProjectUserRelations)
+                    {
+                        if(item.User != null)
+                        {
+                            <img style="width:40px;height:40px;border-radius: 50%;" src="~/img/@item.User.ProfileImageUrl"/>
+                        }
+                    }
+              </td>
+              <td>
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" style="width: @project.Progress%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </td>
+              <td><a href="@Url.Action("DeleteAProject", "Project", new { id = project.Id})">Sil</a></td>
+            </tr>
+        }
+  </tbody>
+</table>

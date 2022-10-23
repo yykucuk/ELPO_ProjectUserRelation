@@ -1,24 +1,26 @@
 ﻿using ELPO_ProjectUserRelation.Bussiness.Abstract;
 using ELPO_ProjectUserRelation.DataAccess.Abstract;
-using ELPO_ProjectUserRelation.Entities;
+using ELPO_ProjectUserRelation.Entities.ELPOContextDir;
 
 namespace ELPO_ProjectUserRelation.Bussiness.Concrete
 {
     public class UserManager : IUserService
     {
         private IUserDal _userDal;
+        private IRoleService _roleService;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="userDal"></param>
-        public UserManager(IUserDal userDal)
+        public UserManager(IUserDal userDal, IRoleService roleService)
         {
             _userDal = userDal;
+            _roleService = roleService;
         }
 
         /// <summary>
-        /// It gets all users
+        /// It gets Users with including ProjectUserRelations
         /// </summary>
         /// <returns></returns>
         public List<User> GetAll()
@@ -32,20 +34,45 @@ namespace ELPO_ProjectUserRelation.Bussiness.Concrete
         /// <param name="name"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public User GetUserByNameAndPassword(string name, string password)
         {
-            return _userDal.GetOne(s => s.Name == name & s.Password == password);
+            User user = _userDal.GetOne(s => s.Name == name & s.Password == password);
+            if(user == null)
+            {
+                return null;
+            }
+            user.Role = _roleService.GetById(user.RoleId);
+            return user;
         }
 
         /// <summary>
         /// It deletes user by giving Id
         /// </summary>
         /// <param name="id"></param>
-        public bool Delete(int id)
+        public bool DeleteByResult(int id)
         {
             User user = _userDal.GetById(id);
             return _userDal.DeleteByResult(user);
+        }
+
+        /// <summary>
+        /// It updates the LastOnlineDate of the user
+        /// </summary>
+        /// <param name="user"></param>
+        public void UpdateUserLastOnlineDate(User user)
+        {
+            user.LastOnline = DateTime.Now;
+            _userDal.Update(user);
+        }
+
+        /// <summary>
+        /// It gets users by userId
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<User> GetUsersByUserId(int id)
+        {
+            return _userDal.GetAllByFilter(s => s.Id == id);
         }
     }
 }

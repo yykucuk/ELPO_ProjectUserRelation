@@ -1,36 +1,84 @@
 ﻿using ELPO_ProjectUserRelation.Bussiness.Abstract;
+using ELPO_ProjectUserRelation.Entities.ELPOContextDir;
 using ELPO_ProjectUserRelation.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace ELPO_ProjectUserRelation.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IUserService _userService;
-        private readonly IProjectService _projectService;
-        private readonly IRoleService _roleService;
-        private readonly ICategoryService _categoryService;
 
-        public HomeController(IUserService userService,
-            IProjectService projectService,
-            IRoleService roleService,
-            ICategoryService categoryService)
+        public HomeController(IUserService userService)
         {
             _userService = userService;
-            _projectService = projectService;
-            _roleService = roleService;
-            _categoryService = categoryService;
         }
 
-        public IActionResult Index()
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("LogIn");
+        }
+
+        public IActionResult LogIn()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        public async Task<IActionResult> DoLogIn(string user_name, string password)
         {
-            return View();
+            User user = _userService.GetUserByNameAndPassword(user_name, password);
+            if (user == null)
+            {
+                return View("Message", "Yanlış kullanıcı bilgileri girdiniz!");
+            }
+            _userService.UpdateUserLastOnlineDate(user);
+
+            var claim = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Id.ToString())
+            };
+
+            claim.Add(new Claim(ClaimTypes.Role, user.Role.Name));
+            var claimIdentity = new ClaimsIdentity(claim, CookieAuthenticationDefaults.AuthenticationScheme);
+            var property = new AuthenticationProperties
+            {
+                ExpiresUtc = new DateTimeOffset(DateTime.Now.AddDays(1)),
+                IssuedUtc = new DateTimeOffset(DateTime.Now)
+            };
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimIdentity), property);
+
+            return RedirectToAction("Projects");
+        }
+
+        public IActionResult Projects()
+        {
+            if(User.Claims.Where(s=>s.Type == ClaimTypes.Role & s.Value == "Admin").Any())
+            {
+                return RedirectToAction("AdminProjectList", "Project");
+            }
+            else
+            {
+                return RedirectToAction("UserProjectList","Project");
+            }
+        }
+
+        public IActionResult Members()
+        {
+            if (User.Claims.Where(s => s.Type == ClaimTypes.Role & s.Value == "Admin").Any())
+            {
+                return RedirectToAction("AdminMemberList", "Member");
+            }
+            else
+            {
+                return RedirectToAction("UserMemberList", "Member");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

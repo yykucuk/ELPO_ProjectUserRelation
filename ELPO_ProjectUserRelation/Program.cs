@@ -2,13 +2,23 @@ using ELPO_ProjectUserRelation.Bussiness.Abstract;
 using ELPO_ProjectUserRelation.Bussiness.Concrete;
 using ELPO_ProjectUserRelation.DataAccess.Abstract;
 using ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-#region Depency Injection
+//Authentication for cookies
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+    options =>
+    {
+        options.Cookie.Path = "/";
+        options.Cookie.Name = "cookieName";
+        options.Cookie.Domain = "localhost";
+    });
+
+#region Dependency Injection
 
 //For User
 builder.Services.AddScoped<IUserDal, UserDal>();
@@ -21,7 +31,9 @@ builder.Services.AddScoped<IRoleDal, RoleDal>();
 builder.Services.AddScoped<IRoleService, RoleManager>();
 //For Category
 builder.Services.AddScoped<ICategoryDal, CategoryDal>();
-builder.Services.AddScoped<ICategoryService, CategoryManager>();
+//For ProjectUserRelation  
+builder.Services.AddScoped<IProjectUserRelationDal, ProjectUserRelationDal>();
+builder.Services.AddScoped<IProjectUserRelationService, ProjectUserRelationManager>();
 
 #endregion
 
@@ -37,7 +49,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseAuthentication();//Bunu yapmadan cookie ler kaydolmuyor
 
 app.UseRouting();
 

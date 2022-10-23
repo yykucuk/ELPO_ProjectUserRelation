@@ -8,7 +8,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
     public class EFCoreGenericRepository<T, TContext> : IRepository<T> where T : class where TContext : DbContext, new()
     {
 
-        public IList<T> GetAllByFilter(Expression<Func<T, bool>> filter)
+        public virtual IList<T> GetAllByFilter(Expression<Func<T, bool>> filter)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             }
         }
 
-        public IQueryable<T> GetAll(Expression<Func<T, bool>> filter)
+        public virtual IQueryable<T> GetAll(Expression<Func<T, bool>> filter)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             }
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             try
             {
@@ -56,7 +56,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             }
         }
 
-        public T GetById(int id)
+        public virtual T GetById(int id)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             }
         }
 
-        public T GetOne(Expression<Func<T, bool>> filter)
+        public virtual T GetOne(Expression<Func<T, bool>> filter)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             }
         }
 
-        public void Create(T entity)
+        public virtual void Create(T entity)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             }
         }
 
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
         }
 
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             }
         }
 
-        public bool CreateByResult(T entity)
+        public virtual bool CreateByResult(T entity)
         {
             try
             {
@@ -156,7 +156,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             }
         }
 
-        public bool UpdateByResult(T entity)
+        public virtual bool UpdateByResult(T entity)
         {
             try
             {
@@ -175,7 +175,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             }
         }
 
-        public bool DeleteByResult(T entity)
+        public virtual bool DeleteByResult(T entity)
         {
             try
             {
@@ -197,7 +197,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             }
         }
 
-        public bool CreateList(List<T> entities)
+        public virtual bool CreateList(List<T> entities)
         {
             bool isResult = false;
             using (var context = new TContext())
@@ -224,7 +224,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             return isResult;
         }
 
-        public bool DeleteList(List<T> entities)
+        public virtual bool DeleteList(List<T> entities)
         {
             bool isResult = false;
             using (var context = new TContext())
@@ -256,7 +256,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             return isResult;
         }
 
-        public T CreateByEntityResult(T entity)
+        public virtual T CreateByEntityResult(T entity)
         {
             try
             {

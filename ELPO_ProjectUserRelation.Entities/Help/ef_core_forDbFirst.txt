@@ -1,0 +1,2 @@
+﻿Scaffold-DbContext "Server=127.0.0.1;Database=ELPO_PROJECT_USER_RELATIONSHIP;User ID=yykucuk;Password=yykucuk;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -Context ELPOContext -OutputDir "Entities"
+Scaffold-DbContext "Server=127.0.0.1;Database=ELPO_PROJECT_USER_RELATIONSHIP;User ID=yykucuk;Password=yykucuk;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -Context ELPOContext -OutputDir "Entities" -force

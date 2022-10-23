@@ -1,4 +1,4 @@
-﻿using ELPO_ProjectUserRelation.Entities;
+﻿using ELPO_ProjectUserRelation.Entities.ELPOContextDir;
 
 namespace ELPO_ProjectUserRelation.Bussiness.Abstract
 {
@@ -22,6 +22,19 @@ namespace ELPO_ProjectUserRelation.Bussiness.Abstract
         /// It deletes the user by giving Id
         /// </summary>
         /// <param name="id"></param>
-        public bool Delete(int id);
+        public bool DeleteByResult(int id);
+
+        /// <summary>
+        /// It updates the LastOnlineDate of the user
+        /// </summary>
+        /// <param name="user"></param>
+        public void UpdateUserLastOnlineDate(User user);
+
+        /// <summary>
+        /// It gets users by userId
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<User> GetUsersByUserId(int id);
     }
 }
