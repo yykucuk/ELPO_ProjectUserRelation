@@ -110,7 +110,8 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
             {
                 using (var context = new TContext())
                 {
-                    context.Set<T>().Remove(entity);
+                    context.Entry(entity).State = EntityState.Deleted;
+                    //context.Set<T>().Remove(entity);
                     context.SaveChanges();
                 }
             }
@@ -185,7 +186,7 @@ namespace ELPO_ProjectUserRelation.DataAccess.Concrete.EFCore
                 {
                     //context.Configuration.ValidateOnSaveEnabled = false;
                     context.Entry(entity).State = EntityState.Deleted;
-                    context.Set<T>().Remove(entity);
+                    //context.Set<T>().Remove(entity);
                     result = context.SaveChanges();
                 }
                 return result > 0;
